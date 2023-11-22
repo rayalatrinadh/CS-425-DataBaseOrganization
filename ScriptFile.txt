@@ -1,0 +1,230 @@
+
+-- ********************************************Real Estate Management Application Script File****************************************************
+
+--Entity : Address to store the address of users
+
+CREATE TABLE IF NOT EXISTS public."Address"
+(
+    "AddressID" integer NOT NULL,
+    "UserID" character varying COLLATE pg_catalog."default",
+    "City" character varying COLLATE pg_catalog."default",
+    state_ character varying COLLATE pg_catalog."default",
+    street character varying COLLATE pg_catalog."default",
+    "ZIPcode" integer,
+    CONSTRAINT "Address_pkey" PRIMARY KEY ("AddressID")
+);
+
+--Entity : Agent to store the Agent details
+
+CREATE TABLE IF NOT EXISTS public."Agent"
+(
+    "Email" character varying COLLATE pg_catalog."default",
+    "JobTitle" character varying COLLATE pg_catalog."default",
+    "AgencyName" character varying COLLATE pg_catalog."default",
+    "Phone 1" bigint,
+    "Phone 2" bigint,
+    "UserID" character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT "Agent_pkey" PRIMARY KEY ("UserID")
+);
+
+--Entity : Apartment to store the Apartment Details.
+
+CREATE TABLE IF NOT EXISTS public."Apartment"
+(
+    "propertyID" bigint,
+    "no_of_Rooms" integer,
+    "SquareFoot" integer,
+    "Address" character varying COLLATE pg_catalog."default",
+    "Price" boolean,
+    "Location_" character varying COLLATE pg_catalog."default",
+    "Type" character varying COLLATE pg_catalog."default",
+    "crime Rate" integer,
+    "nearBySchools" boolean,
+    "Neighbourhood" text COLLATE pg_catalog."default",
+    city character varying COLLATE pg_catalog."default",
+    street character varying COLLATE pg_catalog."default",
+    state_ character varying COLLATE pg_catalog."default",
+    zipcode integer
+);
+
+--Entity : Booking to store the Booking details.
+CREATE TABLE IF NOT EXISTS public."Booking"
+(
+    "BookingID" bigint NOT NULL,
+    "UserID_R" character varying COLLATE pg_catalog."default",
+    "UserID_Agnt" character varying COLLATE pg_catalog."default",
+    "CCID" bigint,
+    "PropertyID" bigint,
+    "Start_Date" date,
+    "End_Date" date,
+    CONSTRAINT "Booking_pkey" PRIMARY KEY ("BookingID")
+);
+
+-- Entity : Commercial to store the commercial property details.
+
+CREATE TABLE IF NOT EXISTS public."Commercial"
+(
+    "propertyID" bigint,
+    "no_of_Rooms" integer,
+    "SquareFoot" integer,
+    "Address" character varying COLLATE pg_catalog."default",
+    "Price" boolean,
+    "Location_" character varying COLLATE pg_catalog."default",
+    "Type" character varying COLLATE pg_catalog."default",
+    "crime Rate" integer,
+    "nearBySchools" boolean,
+    "Neighbourhood" text COLLATE pg_catalog."default",
+    city character varying COLLATE pg_catalog."default",
+    street character varying COLLATE pg_catalog."default",
+    state_ character varying COLLATE pg_catalog."default",
+    zipcode integer
+);
+
+--Entity : Credit to store the credit details.
+
+CREATE TABLE IF NOT EXISTS public."Credit"
+(
+    "UserID" character varying COLLATE pg_catalog."default",
+    "CCID" bigint NOT NULL,
+    "AddressID" integer,
+    CONSTRAINT "Credit_pkey" PRIMARY KEY ("CCID")
+);
+
+-- Entity : House to store the propery House details.
+
+CREATE TABLE IF NOT EXISTS public."House"
+(
+    "propertyID" bigint,
+    "no_of_Rooms" integer,
+    "SquareFoot" integer,
+    "Address" integer,
+    "Availability" boolean,
+    "Location_" character varying COLLATE pg_catalog."default",
+    "Type" character varying COLLATE pg_catalog."default",
+    "crime Rate" integer,
+    "nearBySchools" boolean,
+    "Neighbourhood" text COLLATE pg_catalog."default",
+    city character varying COLLATE pg_catalog."default",
+    "Street" character varying COLLATE pg_catalog."default",
+    "State_" character varying COLLATE pg_catalog."default",
+    "Zipcode" integer
+);
+
+--Entity : Property to maintain the property Details.
+
+CREATE TABLE IF NOT EXISTS public."Property"
+(
+    "propertyID" bigint NOT NULL,
+    CONSTRAINT "Property_pkey" PRIMARY KEY ("propertyID")
+);
+
+--Entity : Renter to store the perspective Renter Details.
+
+CREATE TABLE IF NOT EXISTS public."Renter"
+(
+    "Email" character varying COLLATE pg_catalog."default",
+    "MoveInDate" date,
+    location_ character varying COLLATE pg_catalog."default",
+    budget integer,
+    "Rewards" integer,
+    "UserID" character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT "Renter_pkey" PRIMARY KEY ("UserID")
+);
+--Entity : User to maintain the user details (Agent/Renter).
+
+CREATE TABLE IF NOT EXISTS public."User"
+(
+    "Email" character varying COLLATE pg_catalog."default" NOT NULL,
+    "Name" character varying COLLATE pg_catalog."default",
+    CONSTRAINT "User_pkey" PRIMARY KEY ("Email")
+);
+
+ALTER TABLE IF EXISTS public."Address"
+    ADD CONSTRAINT "FK_Address.UserID" FOREIGN KEY ("UserID")
+    REFERENCES public."Renter" ("UserID") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public."Agent"
+    ADD CONSTRAINT "UserEmail" FOREIGN KEY ("Email")
+    REFERENCES public."User" ("Email") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public."Apartment"
+    ADD CONSTRAINT property FOREIGN KEY ("propertyID")
+    REFERENCES public."Property" ("propertyID") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public."Booking"
+    ADD CONSTRAINT "FK_Booking.CCID" FOREIGN KEY ("CCID")
+    REFERENCES public."Credit" ("CCID") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public."Booking"
+    ADD CONSTRAINT "FK_Booking.UserID_Agnt" FOREIGN KEY ("UserID_Agnt")
+    REFERENCES public."Agent" ("UserID") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public."Booking"
+    ADD CONSTRAINT "FK_Booking.UserID_R" FOREIGN KEY ("UserID_R")
+    REFERENCES public."Renter" ("UserID") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public."Commercial"
+    ADD CONSTRAINT "Property" FOREIGN KEY ("propertyID")
+    REFERENCES public."Property" ("propertyID") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public."Credit"
+    ADD CONSTRAINT "FK_Credit.AddressID" FOREIGN KEY ("AddressID")
+    REFERENCES public."Address" ("AddressID") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public."Credit"
+    ADD CONSTRAINT "FK_Credit.UserID" FOREIGN KEY ("UserID")
+    REFERENCES public."Renter" ("UserID") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE IF EXISTS public."House"
+    ADD CONSTRAINT "Property" FOREIGN KEY ("propertyID")
+    REFERENCES public."Property" ("propertyID") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+
+ALTER TABLE IF EXISTS public."Renter"
+    ADD CONSTRAINT "UserMail" FOREIGN KEY ("Email")
+    REFERENCES public."User" ("Email") MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID;
+
+END;
+
+
+-- GROUP ID : 32
+-- GROUP MEMBERS : 
+--  Rakesh Datta Adapa
+--  Trinadh Rayala
+--  Naga Krishna Poorna Chandu Kovelamudi

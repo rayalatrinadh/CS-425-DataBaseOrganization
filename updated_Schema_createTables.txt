@@ -1,0 +1,146 @@
+
+	-- ====================================>>> updated schema 
+CREATE TABLE IF NOT EXISTS Address
+(
+    AddressID character varying COLLATE pg_catalog."default",
+    UserID character varying COLLATE pg_catalog."default",
+    City character varying COLLATE pg_catalog."default",
+    state character varying COLLATE pg_catalog."default",
+    street character varying COLLATE pg_catalog."default",
+    ZIPcode integer,
+    CONSTRAINT Address_pkey PRIMARY KEY (AddressID)
+);
+
+
+
+CREATE TABLE IF NOT EXISTS public.Agent
+(
+    Email character varying COLLATE pg_catalog."default",
+    JobTitle character varying COLLATE pg_catalog."default",
+    AgencyName character varying COLLATE pg_catalog."default",
+    PhoneNumber01 character varying COLLATE pg_catalog."default",
+    PhoneNumber02 character varying COLLATE pg_catalog."default",
+    UserID character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT Agent_pkey PRIMARY KEY (UserID)
+);
+
+
+CREATE TABLE IF NOT EXISTS public.Apartment
+(
+    propertyID bigint,
+    noOfRooms integer,
+    SquareFoot integer,
+    Address character varying COLLATE pg_catalog."default",
+    Price integer,
+    apartmentLocation character varying COLLATE pg_catalog."default",
+    apartmentType character varying COLLATE pg_catalog."default",
+    crimeRate integer,
+    nearBySchools boolean,
+    Neighbourhood text COLLATE pg_catalog."default",
+    city character varying COLLATE pg_catalog."default",
+    street character varying COLLATE pg_catalog."default",
+    state character varying COLLATE pg_catalog."default",
+    zipcode integer
+);
+
+CREATE TABLE IF NOT EXISTS public.Booking
+(
+    BookingID bigint NOT NULL,
+    UserID_R character varying COLLATE pg_catalog."default",
+    UserID_Agnt character varying COLLATE pg_catalog."default",
+    CCID bigint,
+    PropertyID bigint,
+    Start_Date date,
+    End_Date date,
+    CONSTRAINT Booking_pkey PRIMARY KEY (BookingID)
+);
+
+
+CREATE TABLE IF NOT EXISTS public.Commercial
+(
+    propertyID bigint,
+    noOfRooms integer,
+    SquareFoot integer,
+    Address character varying COLLATE pg_catalog."default",
+    Price integer,
+    Location character varying COLLATE pg_catalog."default",
+    CommercialType character varying COLLATE pg_catalog."default",
+    crimeRate integer,
+    nearBySchools boolean,
+    Neighbourhood text COLLATE pg_catalog."default",
+    city character varying COLLATE pg_catalog."default",
+    street character varying COLLATE pg_catalog."default",
+    state character varying COLLATE pg_catalog."default",
+    zipcode integer
+);
+
+
+CREATE TABLE IF NOT EXISTS public.Credit
+(
+    UserID character varying COLLATE pg_catalog."default",
+    CCID bigint NOT NULL,
+    AddressID integer,
+    CONSTRAINT Credit_pkey PRIMARY KEY (CCID)
+);
+
+
+CREATE TABLE IF NOT EXISTS public.House
+(
+    propertyID bigint,
+    noOfRooms integer,
+    SquareFoot integer,
+    Address character varying COLLATE pg_catalog."default",
+    Availability boolean,
+    HouseLocation character varying COLLATE pg_catalog."default",
+    HouseType character varying COLLATE pg_catalog."default",
+    crimeRate integer,
+    nearBySchools boolean,
+    Neighbourhood text COLLATE pg_catalog."default",
+    city character varying COLLATE pg_catalog."default",
+    Street character varying COLLATE pg_catalog."default",
+    State character varying COLLATE pg_catalog."default",
+    Zipcode integer
+);
+
+
+CREATE TABLE IF NOT EXISTS public.Property
+(
+    propertyID bigint NOT NULL,
+    CONSTRAINT Property_pkey PRIMARY KEY (propertyID)
+);
+
+CREATE TABLE IF NOT EXISTS public.Renter
+(
+    Email character varying COLLATE pg_catalog."default",
+    MoveInDate date,
+    location character varying COLLATE pg_catalog."default",
+    budget integer,
+    Rewards integer,
+    UserID character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT Renter_pkey PRIMARY KEY (UserID)
+);
+
+--user is a reserve keyword in postgresql so changed to UserInfo
+CREATE TABLE IF NOT EXISTS public.UserInfo
+(
+    Email character varying COLLATE pg_catalog."default" NOT NULL,
+    Name character varying COLLATE pg_catalog."default",
+    CONSTRAINT UserInfo_pkey PRIMARY KEY (Email)
+);
+
+select * from Address;
+select * from Agent;
+select * from Apartment;
+select * from Booking;
+select * from Commercial;
+select * from Credit;
+select * from House;
+select * from property;
+select * from Renter;
+select * from UserInfo;
+
+
+
+
+
+
